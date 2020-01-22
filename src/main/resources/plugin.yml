@@ -1,4 +1,5 @@
-name: Random Spawn
+name: RandomSpawn
+api-version: 1.13
 version: 2.6
 main: me.josvth.randomspawn.RandomSpawn
 author: Josvth

@@ -8,18 +8,17 @@
 
   <repositories>
     <repository>
-      <id>bukkit-repo</id>
-      <url>http://repo.bukkit.org/content/groups/public</url>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
   </repositories>
 
   <dependencies>
     <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.6.2-R0.1</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.15.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -36,8 +35,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.0</version>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
     </plugins>
