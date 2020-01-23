@@ -164,22 +164,26 @@ public class RandomSpawn extends JavaPlugin {
             }
         }
 
-        Location location = new Location(world, xrand, y, zrand);
+//        logInfo("Choose y: " + y);
+
+        Location location = new Location(world, xrand, y + 1, zrand);
 
         return location;
     }
 
-    private double getValidHighestY(World world, double x, double z, List<Material> blacklist) {
+    private int getValidHighestY(World world, double x, double z, List<Material> blacklist) {
 
         world.getChunkAt(new Location(world, x, 0, z)).load();
 
-        double y = 0;
+        int y = 0;
         Material blockType = Material.AIR;
 
         if (world.getEnvironment().equals(Environment.NETHER)) {
             Material blockYType = world.getBlockAt((int) x, (int) y, (int) z).getType();
             Material blockY2Type = world.getBlockAt((int) x, (int) (y + 1), (int) z).getType();
-            while (y < 128 && !(blockYType == Material.AIR && blockY2Type == Material.AIR)) {
+            while (y < 128 && !(
+                    (blockYType == Material.AIR || blockYType == Material.VOID_AIR || blockYType == Material.CAVE_AIR)
+                            && (blockY2Type == Material.AIR || blockY2Type == Material.VOID_AIR || blockY2Type == Material.CAVE_AIR))) {
                 y++;
                 blockYType = blockY2Type;
                 blockY2Type = world.getBlockAt((int) x, (int) (y + 1), (int) z).getType();
@@ -187,16 +191,19 @@ public class RandomSpawn extends JavaPlugin {
             if (y == 127) return -1;
         } else {
             y = 257;
-            while (y >= 0 && blockType == Material.AIR) {
+            while (y >= 0 && (blockType == Material.AIR || blockType == Material.VOID_AIR || blockType == Material.CAVE_AIR)) {
                 y--;
                 blockType = world.getBlockAt((int) x, (int) y, (int) z).getType();
+//                logInfo(y + " blockType: " + String.valueOf(blockType));
             }
             if (y == 0) {
                 return -1;
             }
         }
 
-        if (blacklist.contains(blockType)) return -1;
+        if (blacklist.contains(blockType)) {
+            return -1;
+        }
         if (blacklist.contains(Material.CACTUS) && world.getBlockAt((int) x, (int) (y + 1), (int) z).getType() == Material.CACTUS) {
             return -1; // Check for cacti
         }
@@ -212,9 +219,9 @@ public class RandomSpawn extends JavaPlugin {
 
         World world = location.getWorld();
 
-        for (int y = 0; y <= location.getBlockY() + 2; y++) {
+        for (int y = 0; y <= location.getBlockY() + 4; y++) {
             Block block = world.getBlockAt(location.getBlockX(), y, location.getBlockZ());
-            player.sendBlockChange(block.getLocation(), block.getType(), block.getData());
+            player.sendBlockChange(block.getLocation(), block.getBlockData());
         }
 
     }
